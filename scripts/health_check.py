@@ -7,7 +7,6 @@ import pathlib
 import sys
 import logging
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -45,7 +44,6 @@ def health_check() -> bool:
     
     all_checks_passed = True
     
-    # Check required files
     required_files = [
         (ROOT / "index.html", "Main index page"),
         (ROOT / "feed.xml", "RSS feed"),
@@ -59,7 +57,6 @@ def health_check() -> bool:
         if not check_file_exists(file_path, description):
             all_checks_passed = False
     
-    # Check required directories
     required_dirs = [
         (ROOT / "posts", "Posts directory"),
         (ROOT / "assets", "Assets directory"),
@@ -71,7 +68,6 @@ def health_check() -> bool:
         if not check_directory_exists(dir_path, description):
             all_checks_passed = False
     
-    # Check posts structure
     posts_dir = ROOT / "posts"
     if posts_dir.exists():
         post_count = len(list(posts_dir.glob("*/")))
@@ -80,7 +76,6 @@ def health_check() -> bool:
         if post_count == 0:
             logger.warning("⚠️  No blog posts found")
     
-    # Check scripts are executable
     scripts = [
         ROOT / "scripts" / "build_index.py",
         ROOT / "scripts" / "changed_posts.py",

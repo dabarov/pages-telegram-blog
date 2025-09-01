@@ -10,7 +10,6 @@ import sys
 import logging
 from typing import Dict, Any
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -32,7 +31,6 @@ def validate_post(post_dir: pathlib.Path) -> Dict[str, Any]:
     warnings = []
     slug = post_dir.name
     
-    # Check required files
     meta_file = post_dir / "meta.json"
     index_file = post_dir / "index.html"
     
@@ -43,7 +41,6 @@ def validate_post(post_dir: pathlib.Path) -> Dict[str, Any]:
     if not index_file.exists():
         errors.append("Missing index.html")
     
-    # Validate meta.json
     try:
         with open(meta_file, 'r', encoding='utf-8') as f:
             meta = json.load(f)
@@ -51,33 +48,28 @@ def validate_post(post_dir: pathlib.Path) -> Dict[str, Any]:
         errors.append(f"Invalid JSON in meta.json: {e}")
         return {"slug": slug, "errors": errors, "warnings": warnings}
     
-    # Check required fields
     required_fields = ["title", "date"]
     for field in required_fields:
         if field not in meta:
             errors.append(f"Missing required field '{field}' in meta.json")
     
-    # Validate date format
     if "date" in meta:
         try:
             datetime.datetime.strptime(meta["date"], "%Y-%m-%d")
         except ValueError:
             errors.append(f"Invalid date format '{meta['date']}' (expected YYYY-MM-DD)")
     
-    # Check image file
     image_filename = meta.get("image", "cover.png")
     image_file = post_dir / image_filename
     if not image_file.exists():
         warnings.append(f"Missing image file: {image_filename}")
     
-    # Check for common issues
     if "title" in meta and len(meta["title"]) > 100:
         warnings.append("Title is very long (>100 characters)")
     
     if "description" in meta and len(meta["description"]) > 200:
         warnings.append("Description is very long (>200 characters)")
     
-    # Check index.html size
     if index_file.exists() and index_file.stat().st_size == 0:
         errors.append("index.html is empty")
     

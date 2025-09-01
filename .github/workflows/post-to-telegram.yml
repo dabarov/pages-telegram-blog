@@ -31,10 +31,11 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          CHANGED_SLUGS: ${{ steps.changed.outputs.slugs }}
         run: |
           python - << 'PY'
-          import json, subprocess
-          slugs = json.loads("${{ steps.changed.outputs.slugs }}")
+          import json, subprocess, os
+          slugs = json.loads(os.environ["CHANGED_SLUGS"])
           if slugs:
               subprocess.check_call(["python","scripts/telegram_post.py", *slugs])
           PY

@@ -10,11 +10,9 @@ import requests
 import sys
 import logging
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Environment variables validation
 try:
     BOT = os.environ["TELEGRAM_BOT_TOKEN"]
     CHAT = os.environ["TELEGRAM_CHAT_ID"]
@@ -42,14 +40,12 @@ def post_slug(slug: str) -> bool:
             logger.error(f"Meta file not found: {meta_path}")
             return False
             
-        # Load metadata
         try:
             meta = json.loads(meta_path.read_text(encoding="utf-8"))
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON in meta file {meta_path}: {e}")
             return False
             
-        # Get image path
         image_filename = meta.get("image", "cover.png")
         img_path = ROOT / "posts" / slug / image_filename
         
@@ -57,11 +53,9 @@ def post_slug(slug: str) -> bool:
             logger.error(f"Image file not found: {img_path}")
             return False
             
-        # Prepare message
-        url = f"/posts/{slug}/"  # relative URL—works on channel as plain text
+        url = f"/posts/{slug}/"
         caption = meta.get("telegram_message") or f"{meta['title']}\n{url}"
         
-        # Post to Telegram
         with open(img_path, "rb") as f:
             response = requests.post(
                 f"https://api.telegram.org/bot{BOT}/sendPhoto",
@@ -96,6 +90,5 @@ if __name__ == "__main__":
     
     logger.info(f"Posted {success_count}/{total_count} posts successfully")
     
-    # Exit with error if any posts failed
     if success_count < total_count:
         sys.exit(1)

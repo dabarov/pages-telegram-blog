@@ -24,7 +24,6 @@ A minimal static blog that automatically cross-posts to Telegram using GitHub Pa
 ### 1. Setup Repository
 
 ```bash
-# Use this template or clone the repository
 git clone https://github.com/your-username/pages-telegram-blog.git
 cd pages-telegram-blog
 ```
@@ -74,27 +73,27 @@ Create `posts/my-first-post/index.html` with your blog content and add a `cover.
 
 ```
 .
-├── 📄 index.html              # Main blog page (auto-generated)
-├── 📂 posts/                  # Blog posts directory
+├── 📄 index.html
+├── 📂 posts/
 │   └── 📂 post-slug/
-│       ├── 📄 index.html      # Post content
-│       ├── 📄 meta.json       # Post metadata
-│       └── 🖼️ cover.png        # Post image
+│       ├── 📄 index.html
+│       ├── 📄 meta.json
+│       └── 🖼️ cover.png
 ├── 📂 assets/
 │   ├── 📂 css/
-│   │   └── 📄 site.css        # Site styles
+│   │   └── 📄 site.css
 │   └── 📂 img/
-│       └── 🖼️ og-default.png   # Default OG image
+│       └── 🖼️ og-default.png
 ├── 📂 scripts/
-│   ├── 🐍 build_index.py      # Builds index/RSS/sitemap
-│   ├── 🐍 changed_posts.py    # Detects changed posts
-│   └── 🐍 telegram_post.py    # Posts to Telegram
+│   ├── 🐍 build_index.py
+│   ├── 🐍 changed_posts.py
+│   └── 🐍 telegram_post.py
 ├── 📂 .github/workflows/
-│   ├── 🔧 build.yml           # Build automation
-│   └── 🔧 post-to-telegram.yml # Telegram posting
-├── 📄 feed.xml               # RSS feed (auto-generated)
-├── 📄 sitemap.xml            # Sitemap (auto-generated)
-└── 📄 robots.txt             # SEO robots file
+│   ├── 🔧 build.yml
+│   └── 🔧 post-to-telegram.yml
+├── 📄 feed.xml
+├── 📄 sitemap.xml
+└── 📄 robots.txt
 ```
 
 ## 🛠️ Development
@@ -107,25 +106,19 @@ Create `posts/my-first-post/index.html` with your blog content and add a `cover.
 ### Local Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/your-username/pages-telegram-blog.git
 cd pages-telegram-blog
 
-# Install dependencies
 pip install -r requirements.txt
 
-# Copy environment template (optional, for Telegram testing)
 cp .env.example .env
-# Edit .env with your Telegram credentials
 ```
 
 ### Building Locally
 
 ```bash
-# Generate index.html, feed.xml, and sitemap.xml
 python scripts/build_index.py
 
-# Test Telegram posting (requires .env setup)
 python scripts/telegram_post.py my-post-slug
 ```
 

@@ -7,7 +7,6 @@ import subprocess
 import json
 import logging
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -20,7 +19,6 @@ def get_changed_posts():
         list: List of changed post slugs
     """
     try:
-        # Look at last commit range; fallback to HEAD if shallow
         try:
             diff = subprocess.check_output(
                 ["git", "diff", "--name-only", "HEAD~1", "HEAD"], 
@@ -28,7 +26,6 @@ def get_changed_posts():
                 stderr=subprocess.DEVNULL
             )
         except subprocess.CalledProcessError:
-            # Fallback for shallow repositories
             diff = subprocess.check_output(
                 ["git", "show", "--name-only", "--pretty="], 
                 text=True,

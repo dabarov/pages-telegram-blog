@@ -11,7 +11,6 @@ import xml.etree.ElementTree as ET
 import logging
 from typing import List, Dict, Any
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -34,25 +33,21 @@ def load_posts() -> List[Dict[str, Any]]:
             data = json.loads(meta_file.read_text(encoding="utf-8"))
             slug = meta_file.parent.name
             
-            # Validate required fields
             required_fields = ["title", "date"]
             for field in required_fields:
                 if field not in data:
                     logger.error(f"Missing required field '{field}' in {meta_file}")
                     continue
                     
-            # Validate date format
             try:
                 datetime.datetime.strptime(data["date"], "%Y-%m-%d")
             except ValueError:
                 logger.error(f"Invalid date format in {meta_file}: {data['date']}")
                 continue
                 
-            # Check if index.html exists
             if not (meta_file.parent / "index.html").exists():
                 logger.warning(f"Missing index.html for post: {slug}")
                 
-            # Check if image exists
             image_file = data.get("image", "cover.png")
             if not (meta_file.parent / image_file).exists():
                 logger.warning(f"Missing image file {image_file} for post: {slug}")
@@ -72,7 +67,6 @@ def load_posts() -> List[Dict[str, Any]]:
             logger.error(f"Error processing {meta_file}: {e}")
             continue
     
-    # Sort newest first
     items.sort(key=lambda x: x["date"], reverse=True)
     logger.info(f"Loaded {len(items)} valid posts")
     return items
@@ -145,7 +139,6 @@ def write_feed(posts: List[Dict[str, Any]]) -> None:
         ET.SubElement(item, "link").text = f"/posts/{p['slug']}/"
         guid = ET.SubElement(item, "guid", attrib={"isPermaLink": "true"})
         guid.text = f"/posts/{p['slug']}/"
-        # pubDate must be RFC 2822; assume midnight UTC
         yyyy, mm, dd = p["date"].split("-")
         dt = datetime.datetime(int(yyyy), int(mm), int(dd))
         ET.SubElement(item, "pubDate").text = dt.strftime("%a, %d %b %Y 00:00:00 +0000")
@@ -184,7 +177,6 @@ def main() -> None:
         if not posts:
             logger.warning("No valid posts found!")
         
-        # Write all generated files
         index_path = ROOT / "index.html"
         index_path.write_text(render_index(posts), encoding="utf-8")
         logger.info(f"Generated {index_path}")
