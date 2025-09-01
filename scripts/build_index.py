@@ -84,8 +84,8 @@ def render_index(posts: List[Dict[str, Any]]) -> str:
     """
     cards = "\n".join(
         f"""      <article class="card">
-        <a href="/posts/{p["slug"]}/">
-          <img src="/posts/{p["slug"]}/{p["image"]}" alt="">
+        <a href="posts/{p["slug"]}/">
+          <img src="posts/{p["slug"]}/{p["image"]}" alt="">
           <h2>{html.escape(p["title"])}</h2>
           <p>{html.escape(p["desc"])}</p>
           <p class="date">{p["date"]}</p>
@@ -102,21 +102,21 @@ def render_index(posts: List[Dict[str, Any]]) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:type" content="website">
   <meta property="og:title" content="My Blog">
-  <meta property="og:image" content="/assets/img/og-default.png">
-  <link rel="stylesheet" href="/assets/css/site.css">
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+  <meta property="og:image" content="assets/img/og-default.png">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="feed.xml">
 </head>
 <body>
   <header>
-    <h1><a href="/">My Blog</a></h1>
-    <nav><a href="/feed.xml">RSS</a></nav>
+    <h1><a href="./">My Blog</a></h1>
+    <nav><a href="feed.xml">RSS</a></nav>
   </header>
   <main>
     <section class="grid">
 {cards}
     </section>
   </main>
-  <footer>© {datetime.date.today().year} · RSS: <a href="/feed.xml">feed.xml</a></footer>
+  <footer>© {datetime.date.today().year} · RSS: <a href="feed.xml">feed.xml</a></footer>
 </body>
 </html>"""
 
