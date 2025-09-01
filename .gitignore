@@ -80,7 +80,3 @@ coverage.xml
 # Development tools
 .mypy_cache/
 .ruff_cache/
-bandit-report.json
-
-# Pre-commit
-.pre-commit-config.yaml.backup

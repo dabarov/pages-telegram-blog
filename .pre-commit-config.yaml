@@ -1,6 +1,4 @@
-# Pre-commit configuration
 repos:
-  # Basic code quality and formatting
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
@@ -15,7 +13,6 @@ repos:
       - id: mixed-line-ending
         args: ["--fix=lf"]
 
-  # Python code formatting with Ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.7
     hooks:
@@ -23,7 +20,6 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  # Type checking with mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.1
     hooks:
@@ -31,7 +27,6 @@ repos:
         additional_dependencies: [types-requests]
         args: [--strict, --ignore-missing-imports]
 
-  # HTML/CSS/JS formatting
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v4.0.0-alpha.8
     hooks:
@@ -39,7 +34,6 @@ repos:
         types_or: [html, css, javascript, json, yaml, markdown]
         exclude: ^(feed\.xml|sitemap\.xml|index\.html)$
 
-  # Custom hooks for this project
   - repo: local
     hooks:
       - id: validate-posts
