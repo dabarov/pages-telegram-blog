@@ -3,15 +3,18 @@
 Static Site Builder
 Builds index.html, RSS feed, and sitemap from blog posts.
 """
-import json
-import pathlib
+
 import datetime
 import html
-import xml.etree.ElementTree as ET
+import json
 import logging
-from typing import List, Dict, Any
+import pathlib
+import xml.etree.ElementTree as ET
+from typing import Any
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -19,66 +22,68 @@ POSTS_DIR = ROOT / "posts"
 SITE_DESC = "Minimal static blog with GitHub Actions cross-posting to Telegram."
 
 
-def load_posts() -> List[Dict[str, Any]]:
+def load_posts() -> list[dict[str, Any]]:
     """
     Load and validate all blog posts from the posts directory.
-    
+
     Returns:
         List of post dictionaries sorted by date (newest first)
     """
     items = []
-    
+
     for meta_file in POSTS_DIR.glob("*/meta.json"):
         try:
             data = json.loads(meta_file.read_text(encoding="utf-8"))
             slug = meta_file.parent.name
-            
+
             required_fields = ["title", "date"]
             for field in required_fields:
                 if field not in data:
                     logger.error(f"Missing required field '{field}' in {meta_file}")
                     continue
-                    
+
             try:
                 datetime.datetime.strptime(data["date"], "%Y-%m-%d")
             except ValueError:
                 logger.error(f"Invalid date format in {meta_file}: {data['date']}")
                 continue
-                
+
             if not (meta_file.parent / "index.html").exists():
                 logger.warning(f"Missing index.html for post: {slug}")
-                
+
             image_file = data.get("image", "cover.png")
             if not (meta_file.parent / image_file).exists():
                 logger.warning(f"Missing image file {image_file} for post: {slug}")
-            
-            items.append({
-                "slug": slug,
-                "title": data["title"],
-                "desc": data.get("description", ""),
-                "date": data["date"],
-                "image": image_file,
-            })
-            
+
+            items.append(
+                {
+                    "slug": slug,
+                    "title": data["title"],
+                    "desc": data.get("description", ""),
+                    "date": data["date"],
+                    "image": image_file,
+                }
+            )
+
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON in {meta_file}: {e}")
             continue
         except Exception as e:
             logger.error(f"Error processing {meta_file}: {e}")
             continue
-    
+
     items.sort(key=lambda x: x["date"], reverse=True)
     logger.info(f"Loaded {len(items)} valid posts")
     return items
 
 
-def render_index(posts: List[Dict[str, Any]]) -> str:
+def render_index(posts: list[dict[str, Any]]) -> str:
     """
     Render the main index.html page.
-    
+
     Args:
         posts: List of post dictionaries
-        
+
     Returns:
         HTML string for the index page
     """
@@ -121,10 +126,10 @@ def render_index(posts: List[Dict[str, Any]]) -> str:
 </html>"""
 
 
-def write_feed(posts: List[Dict[str, Any]]) -> None:
+def write_feed(posts: list[dict[str, Any]]) -> None:
     """
     Generate RSS feed XML file.
-    
+
     Args:
         posts: List of post dictionaries
     """
@@ -147,10 +152,10 @@ def write_feed(posts: List[Dict[str, Any]]) -> None:
     (ROOT / "feed.xml").write_bytes(xml)
 
 
-def write_sitemap(posts: List[Dict[str, Any]]) -> None:
+def write_sitemap(posts: list[dict[str, Any]]) -> None:
     """
     Generate sitemap.xml file.
-    
+
     Args:
         posts: List of post dictionaries
     """
@@ -158,7 +163,7 @@ def write_sitemap(posts: List[Dict[str, Any]]) -> None:
         "urlset", attrib={"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     )
 
-    def add(loc):
+    def add(loc: str) -> None:
         u = ET.SubElement(urlset, "url")
         ET.SubElement(u, "loc").text = loc
 
@@ -173,20 +178,20 @@ def main() -> None:
     """Main function to build all site files."""
     try:
         posts = load_posts()
-        
+
         if not posts:
             logger.warning("No valid posts found!")
-        
+
         index_path = ROOT / "index.html"
         index_path.write_text(render_index(posts), encoding="utf-8")
         logger.info(f"Generated {index_path}")
-        
+
         write_feed(posts)
         logger.info(f"Generated {ROOT / 'feed.xml'}")
-        
+
         write_sitemap(posts)
         logger.info(f"Generated {ROOT / 'sitemap.xml'}")
-        
+
     except Exception as e:
         logger.error(f"Build failed: {e}")
         raise

@@ -3,33 +3,36 @@
 Git Changes Detection Script
 Detects changed blog posts based on git diff.
 """
-import subprocess
+
 import json
 import logging
+import subprocess
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 
-def get_changed_posts():
+def get_changed_posts() -> list[str]:
     """
     Get list of changed blog post slugs from git diff.
-    
+
     Returns:
         list: List of changed post slugs
     """
     try:
         try:
             diff = subprocess.check_output(
-                ["git", "diff", "--name-only", "HEAD~1", "HEAD"], 
+                ["git", "diff", "--name-only", "HEAD~1", "HEAD"],
                 text=True,
-                stderr=subprocess.DEVNULL
+                stderr=subprocess.DEVNULL,
             )
         except subprocess.CalledProcessError:
             diff = subprocess.check_output(
-                ["git", "show", "--name-only", "--pretty="], 
+                ["git", "show", "--name-only", "--pretty="],
                 text=True,
-                stderr=subprocess.DEVNULL
+                stderr=subprocess.DEVNULL,
             )
     except subprocess.CalledProcessError as e:
         logger.error(f"Git command failed: {e}")
@@ -53,8 +56,10 @@ def get_changed_posts():
 if __name__ == "__main__":
     changed_posts = get_changed_posts()
     print(json.dumps(changed_posts))
-    
+
     if changed_posts:
-        logger.info(f"Detected {len(changed_posts)} changed posts: {', '.join(changed_posts)}")
+        logger.info(
+            f"Detected {len(changed_posts)} changed posts: {', '.join(changed_posts)}"
+        )
     else:
         logger.info("No changed posts detected")

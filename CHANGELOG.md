@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive error handling in Python scripts
 - Type hints and docstrings for better code documentation
 - Logging throughout the application
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LICENSE file (MIT)
 
 ### Improved
+
 - Enhanced README with detailed documentation and badges
 - Better error handling in build scripts
 - More robust GitHub Actions workflows
@@ -28,12 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Code organization and structure
 
 ### Fixed
+
 - Improved error messages and logging
 - Better handling of missing files and invalid data
 
 ## [1.0.0] - 2025-09-01
 
 ### Added
+
 - Initial release
 - Static blog generation with Python
 - Telegram cross-posting functionality

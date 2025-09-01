@@ -1,7 +1,7 @@
 <div align="center">
   <img src="assets/img/og-default.png" alt="Static Blog + Telegram Cross-Post" height="200">
-  
-  # Static Blog + Telegram Cross-Post
+
+# Static Blog + Telegram Cross-Post
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/dabarov/pages-telegram-blog/workflows/Build%20site/badge.svg)](https://github.com/dabarov/pages-telegram-blog/actions)
@@ -112,10 +112,24 @@ Create `posts/my-first-post/index.html` with your blog content and add a `cover.
 ```bash
 git clone https://github.com/your-username/pages-telegram-blog.git
 cd pages-telegram-blog
+pip install -e ".[dev]"
+pre-commit install
+```
 
-pip install -r requirements.txt
+### Code Quality
 
-cp .env.example .env
+This project uses pre-commit hooks to maintain code quality:
+
+- **Ruff**: Code formatting and linting
+- **MyPy**: Static type checking
+- **Prettier**: HTML/CSS/JS formatting
+- **Markdownlint**: Markdown linting
+- **Bandit**: Security scanning
+
+Hooks run automatically on commit, or manually:
+
+```bash
+pre-commit run --all-files
 ```
 
 ### Building Locally
