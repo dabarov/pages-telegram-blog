@@ -1,0 +1,139 @@
+:root {
+  --bg: #0b0d12;
+  --fg: #e6e9ef;
+  --muted: #a0a6b3;
+  --accent: #4ea1ff;
+  --card: #121622;
+  --border: #1d2433;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter,
+    Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+header,
+footer {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header h1,
+header nav {
+  display: inline-block;
+  vertical-align: middle;
+}
+header h1 a {
+  color: var(--fg);
+}
+header nav {
+  float: right;
+}
+header nav a {
+  margin-left: 16px;
+  color: var(--muted);
+}
+header nav a:hover {
+  color: var(--fg);
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: #2a3446;
+}
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+.card h2 {
+  margin: 12px 12px 0;
+  font-size: 1.1rem;
+}
+.card p {
+  margin: 8px 12px 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.card .date {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+article h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+.post-meta {
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+figure {
+  margin: 0 0 16px 0;
+}
+figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+pre,
+code {
+  background: #0e1420;
+  color: #dce3f0;
+  border: 1px solid var(--border);
+}
+pre {
+  padding: 12px;
+  overflow-x: auto;
+  border-radius: 10px;
+}
+code {
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+footer {
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+}

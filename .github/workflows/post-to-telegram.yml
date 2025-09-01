@@ -1,0 +1,40 @@
+name: Cross-post to Telegram
+on:
+  push:
+    branches: [main]
+    paths:
+      - "posts/**/index.html"
+      - "posts/**/meta.json"
+
+jobs:
+  telegram:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 } # needed for diff
+
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Detect changed posts
+        id: changed
+        run: |
+          echo "slugs=$(python scripts/changed_posts.py)" >> $GITHUB_OUTPUT
+
+      - name: Post to Telegram
+        if: ${{ steps.changed.outputs.slugs != '[]' }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - << 'PY'
+          import json, subprocess
+          slugs = json.loads("${{ steps.changed.outputs.slugs }}")
+          if slugs:
+              subprocess.check_call(["python","scripts/telegram_post.py", *slugs])
+          PY
