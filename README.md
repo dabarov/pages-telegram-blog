@@ -19,7 +19,11 @@ A minimal static blog that automatically cross-posts to Telegram using GitHub Pa
 - 🔍 **SEO Ready**: Includes sitemap, RSS feed, and meta tags
 - 🎨 **Dark Theme**: Modern dark theme with smooth animations
 
-## 🚀 Quick Start
+## � Live Example
+
+See this project in action: [Telegram Channel Example](https://t.me/pages_telegram_blog)
+
+## �🚀 Quick Start
 
 ### 1. Setup Repository
 
