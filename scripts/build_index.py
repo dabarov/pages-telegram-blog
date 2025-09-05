@@ -114,8 +114,12 @@ def render_index(posts: list[dict[str, Any]]) -> str:
 <body>
   <header>
     <h1><a href="./">My Blog</a></h1>
-    <nav><a href="feed.xml">RSS</a></nav>
+    <nav>
+      <a href="feed.xml">RSS</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+    </nav>
   </header>
+  <script src="assets/js/theme.js"></script>
   <main>
     <section class="grid">
 {cards}
@@ -183,7 +187,11 @@ def main() -> None:
             logger.warning("No valid posts found!")
 
         index_path = ROOT / "index.html"
-        index_path.write_text(render_index(posts), encoding="utf-8")
+        index_html = render_index(posts)
+        # Normalize line endings to LF to satisfy mixed-line-ending hook
+        index_html = index_html.replace("\r\n", "\n").replace("\r", "\n")
+        with open(index_path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(index_html)
         logger.info(f"Generated {index_path}")
 
         write_feed(posts)
